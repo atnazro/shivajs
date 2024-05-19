@@ -19,7 +19,7 @@ class Shiva {
      * @param {string} elementName - The name of the element to create (e.g., 'div').
      * @returns {Promise<HTMLElement|null>} The created element or null if an error occurs.
      */
-    static async create(elementName = "div") {
+    static  create(elementName = "div") {
         if (typeof elementName !== "string") {
             console.error("Shiva Error: Invalid element name provided. Must be a string.");
             return null;
@@ -46,7 +46,7 @@ class Shiva {
      * @param {HTMLElement} element - The element to which styles will be added.
      * @param {Object} style - An object representing CSS styles (e.g., {height: "100px", width: "200px"}).
      */
-    static async addStyle(element, style = {}) {
+    static  addStyle(element, style = {}) {
         if (!(element instanceof HTMLElement) || typeof style !== "object") {
             console.error("Shiva Error: Invalid element or style object provided.");
             return;
@@ -62,7 +62,7 @@ class Shiva {
      * @param {HTMLElement} element - The element to which data will be added.
      * @param {string} data - The data to be added as inner HTML.
      */
-    static async addData(element, data = "") {
+    static  addData(element, data = "") {
         if (!(element instanceof HTMLElement) || typeof data !== "string") {
             console.error("Shiva Error: Invalid element or data provided.");
             return;
@@ -78,7 +78,7 @@ class Shiva {
      * @param {HTMLElement} element - The element to which attributes will be added.
      * @param {Object} attributes - An object representing attributes and their values.
      */
-    static async addAttributes(element, attributes = {}) {
+    static  addAttributes(element, attributes = {}) {
         if (!(element instanceof HTMLElement) || typeof attributes !== "object") {
             console.error("Shiva Error: Invalid element or attributes object provided.");
             return;
@@ -97,7 +97,7 @@ class Shiva {
      * @param {string} event - The event type (e.g., 'click').
      * @param {Function} runFunction - The function to be executed when the event is triggered.
      */
-    static async addEvent(element, event, runFunction) {
+    static  addEvent(element, event, runFunction) {
         if (!(element instanceof HTMLElement) || typeof event !== "string" || typeof runFunction !== "function") {
             console.error("Shiva Error: Invalid element, event type, or event handler function provided.");
             return;
@@ -113,7 +113,7 @@ class Shiva {
      * @param {HTMLElement} element - The element to which the script will be added.
      * @param {string} filePath - The relative path to the script file.
      */
-    static async addScript(element, filePath) {
+    static  addScript(element, filePath) {
         if (!(element instanceof HTMLElement) || typeof filePath !== "string") {
             console.error("Shiva Error: Invalid element or script file path provided.");
             return;
@@ -132,7 +132,7 @@ class Shiva {
      * @param {HTMLElement} element - The element to which the script will be added.
      * @param {string} filePath - The relative path to the script file.
      */
-    static async runScript(element, filePath) {
+    static  runScript(element, filePath) {
         if (!(element instanceof HTMLElement) || typeof filePath !== "string") {
             console.error("Shiva Error: Invalid element or script file path provided.");
             return;
@@ -156,7 +156,7 @@ class Shiva {
      * @param {HTMLElement} element - The element to be inserted.
      * @param {HTMLElement} parentElement - The parent element in which to insert the child element.
      */
-    static async renderInto(element, parentElement) {
+    static  renderInto(element, parentElement) {
         if (!(element instanceof HTMLElement) || !(parentElement instanceof HTMLElement)) {
             console.error("Shiva Error: Invalid element or parent element provided.");
             return;
@@ -172,7 +172,7 @@ class Shiva {
      * @param {HTMLElement} element - The element to be inserted.
      * @param {string} rootElementId - The ID of the root element.
      */
-    static async render(element, rootElementId) {
+    static  render(element, rootElementId) {
         if (!(element instanceof HTMLElement)) {
             console.error("Shiva Error: Invalid element provided.");
             return;
@@ -196,7 +196,7 @@ class Shiva {
      * 
      * @param {HTMLElement} element - The element whose information will be logged.
      */
-    static async info(element) {
+    static  info(element) {
         if (!(element instanceof HTMLElement)) {
             console.error("Shiva Error: Invalid element provided for info.");
             return;
