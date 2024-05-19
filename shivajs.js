@@ -10,7 +10,7 @@
  * @contact nazrotech@outlook.com
  */
 
-class Shiva {
+export default class Shiva {
     /**
      * Creates a new HTML element with additional Shiva properties.
      * This method ensures that the created element has custom properties for
@@ -19,7 +19,7 @@ class Shiva {
      * @param {string} elementName - The name of the element to create (e.g., 'div').
      * @returns {Promise<HTMLElement|null>} The created element or null if an error occurs.
      */
-    static  create(elementName = "div") {
+    static create(elementName = "div") {
         if (typeof elementName !== "string") {
             console.error("Shiva Error: Invalid element name provided. Must be a string.");
             return null;
@@ -46,7 +46,7 @@ class Shiva {
      * @param {HTMLElement} element - The element to which styles will be added.
      * @param {Object} style - An object representing CSS styles (e.g., {height: "100px", width: "200px"}).
      */
-    static  addStyle(element, style = {}) {
+    static addStyle(element, style = {}) {
         if (!(element instanceof HTMLElement) || typeof style !== "object") {
             console.error("Shiva Error: Invalid element or style object provided.");
             return;
@@ -62,7 +62,7 @@ class Shiva {
      * @param {HTMLElement} element - The element to which data will be added.
      * @param {string} data - The data to be added as inner HTML.
      */
-    static  addData(element, data = "") {
+    static addData(element, data = "") {
         if (!(element instanceof HTMLElement) || typeof data !== "string") {
             console.error("Shiva Error: Invalid element or data provided.");
             return;
@@ -78,7 +78,7 @@ class Shiva {
      * @param {HTMLElement} element - The element to which attributes will be added.
      * @param {Object} attributes - An object representing attributes and their values.
      */
-    static  addAttributes(element, attributes = {}) {
+    static addAttributes(element, attributes = {}) {
         if (!(element instanceof HTMLElement) || typeof attributes !== "object") {
             console.error("Shiva Error: Invalid element or attributes object provided.");
             return;
@@ -90,22 +90,32 @@ class Shiva {
     }
 
     /**
-     * Adds an event listener to an HTML element.
-     * This method optimizes memory usage by storing event handlers in a plain object and directly assigning them to the element.
+     * Adds an event listener to an HTML element with support for event modifiers.
+     * This method enhances the basic addEvent method by allowing the specification of modifiers 
+     * such as preventing default behavior or stopping event propagation.
      * 
      * @param {HTMLElement} element - The element to which the event listener will be added.
      * @param {string} event - The event type (e.g., 'click').
      * @param {Function} runFunction - The function to be executed when the event is triggered.
+     * @param {Object} modifiers - An object specifying event modifiers (e.g., {preventDefault: true, stopPropagation: false}).
      */
-    static  addEvent(element, event, runFunction) {
+    static addEventWithModifiers(element, event, runFunction, modifiers = {}) {
         if (!(element instanceof HTMLElement) || typeof event !== "string" || typeof runFunction !== "function") {
             console.error("Shiva Error: Invalid element, event type, or event handler function provided.");
             return;
         }
-        element.addEventListener(event, runFunction);
-        element.shivaEvents[event] = runFunction;
+        const handler = (e) => {
+            if (modifiers.preventDefault) {
+                e.preventDefault();
+            }
+            if (modifiers.stopPropagation) {
+                e.stopPropagation();
+            }
+            runFunction(e);
+        };
+        element.addEventListener(event, handler);
+        element.shivaEvents[event] = handler;
     }
-
     /**
      * Adds a script to an HTML element.
      * This method optimizes memory usage by directly appending a script to the element and removing it after execution.
@@ -113,7 +123,7 @@ class Shiva {
      * @param {HTMLElement} element - The element to which the script will be added.
      * @param {string} filePath - The relative path to the script file.
      */
-    static  addScript(element, filePath) {
+    static addScript(element, filePath) {
         if (!(element instanceof HTMLElement) || typeof filePath !== "string") {
             console.error("Shiva Error: Invalid element or script file path provided.");
             return;
@@ -132,20 +142,22 @@ class Shiva {
      * @param {HTMLElement} element - The element to which the script will be added.
      * @param {string} filePath - The relative path to the script file.
      */
-    static  runScript(element, filePath) {
+    static async loadScript(element, filePath) {
         if (!(element instanceof HTMLElement) || typeof filePath !== "string") {
             console.error("Shiva Error: Invalid element or script file path provided.");
             return;
         }
         try {
+            const response = await fetch(filePath);
+            if (!response.ok) {
+                throw new Error(`Failed to load script: ${response.status} - ${response.statusText}`);
+            }
+            const scriptContent = await response.text();
             const script = document.createElement("script");
-            script.type = "module";
-            script.src = filePath;
-            script.classList.add("removable-import-element");
+            script.textContent = scriptContent;
             element.appendChild(script);
-            script.remove();
         } catch (error) {
-            console.error("Shiva Error: Error occurred while running script.", error);
+            console.error("Shiva Error: Error occurred while loading script.", error);
         }
     }
 
@@ -156,7 +168,7 @@ class Shiva {
      * @param {HTMLElement} element - The element to be inserted.
      * @param {HTMLElement} parentElement - The parent element in which to insert the child element.
      */
-    static  renderInto(element, parentElement) {
+    static renderInto(element, parentElement) {
         if (!(element instanceof HTMLElement) || !(parentElement instanceof HTMLElement)) {
             console.error("Shiva Error: Invalid element or parent element provided.");
             return;
@@ -172,7 +184,7 @@ class Shiva {
      * @param {HTMLElement} element - The element to be inserted.
      * @param {string} rootElementId - The ID of the root element.
      */
-    static  render(element, rootElementId) {
+    static render(element, rootElementId) {
         if (!(element instanceof HTMLElement)) {
             console.error("Shiva Error: Invalid element provided.");
             return;
@@ -196,7 +208,7 @@ class Shiva {
      * 
      * @param {HTMLElement} element - The element whose information will be logged.
      */
-    static  info(element) {
+    static info(element) {
         if (!(element instanceof HTMLElement)) {
             console.error("Shiva Error: Invalid element provided for info.");
             return;
@@ -210,5 +222,4 @@ class Shiva {
     }
 }
 
-export { Shiva };
 
