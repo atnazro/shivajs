@@ -132,7 +132,7 @@ export default class Shiva {
         script.src = filePath;
         script.classList.add("removable-element");
         element.append(script);
-        script.remove();
+        script.onload = () => script.remove();
     }
 
     /**
@@ -156,6 +156,9 @@ export default class Shiva {
             const script = document.createElement("script");
             script.textContent = scriptContent;
             element.appendChild(script);
+            script.onload = () => script.remove();
+
+
         } catch (error) {
             console.error("Shiva Error: Error occurred while loading script.", error);
         }
